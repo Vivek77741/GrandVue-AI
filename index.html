@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrandVue AI | Hotel Group Booking Assistant & Deterministic Yield Engine</title>
+  <meta name="description" content="Autonomous Hotel Group Booking Assistant with Rule of 3 minimal question filtering, transparent assumptions, and deterministic pricing engine." />
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <div id="app" class="app-container">
+    
+    <!-- Top Global Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-badge">HOTEL AI ASSISTANT</div>
+        <div class="brand-title-wrap">
+          <h1 class="brand-title">GrandVue <span>Concierge</span></h1>
+          <p class="brand-subtitle">Autonomous Group Inquiries & Deterministic Pricing Engine</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" role="tablist">
+        <button id="tab-btn-chat" class="tab-btn active" role="tab" aria-selected="true" data-tab="chat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          Screen 1: Guest Chat
+        </button>
+        <button id="tab-btn-settings" class="tab-btn" role="tab" aria-selected="false" data-tab="settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Screen 2: Hotel Settings
+        </button>
+        <button id="tab-btn-arch" class="tab-btn" role="tab" aria-selected="false" data-tab="architecture">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          Architecture & System Design
+        </button>
+      </nav>
+
+      <div class="header-status">
+        <span class="status-indicator"></span>
+        <span class="status-text">Deterministic Engine Active</span>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="main-content">
+
+      <!-- ============================================== -->
+      <!-- TAB 1: GUEST CHAT SIMULATOR (SCREEN 1) -->
+      <!-- ============================================== -->
+      <section id="view-chat" class="tab-view active">
+        <div class="chat-workspace">
+
+          <!-- Left Column: Chat Conversation Stream -->
+          <div class="chat-column">
+            
+            <!-- Quick Preset Email Selector -->
+            <div class="preset-selector-bar">
+              <span class="preset-label">Test Inbound Emails:</span>
+              <div class="preset-buttons">
+                <button id="preset-a" class="preset-pill" data-email="a" title="Wedding with missing dates/guests">
+                  <span class="preset-tag">Email A</span> Missing Details (Wedding)
+                </button>
+                <button id="preset-b" class="preset-pill" data-email="b" title="30 employees corporate offsite">
+                  <span class="preset-tag">Email B</span> Corporate Offsite (30 pax)
+                </button>
+                <button id="preset-c" class="preset-pill" data-email="c" title="90 guests wedding with discounts">
+                  <span class="preset-tag">Email C</span> Wedding (90 pax + Cross-Sell)
+                </button>
+                <button id="preset-d" class="preset-pill" data-email="d" title="Family reunion with ₹3 Lakh budget">
+                  <span class="preset-tag">Email D</span> Budget-Based (₹3 Lakh)
+                </button>
+              </div>
+              <button id="btn-clear-chat" class="clear-btn" title="Reset conversation">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                Reset
+              </button>
+            </div>
+
+            <!-- Chat Message List Container -->
+            <div id="chat-messages" class="chat-messages">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Chat Input Form -->
+            <form id="chat-input-form" class="chat-input-form">
+              <div class="input-wrapper">
+                <textarea 
+                  id="chat-textarea" 
+                  class="chat-textarea" 
+                  placeholder="Paste an inbound guest email or type a follow-up reply (e.g., 'From 15 to 18 Dec, 70 guests' or 'Can we upgrade to Super Deluxe?')..."
+                  rows="3"
+                  required
+                ></textarea>
+                <button type="submit" id="chat-submit-btn" class="chat-submit-btn">
+                  <span>Send to Engine</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+              </div>
+              <div class="input-footnote">
+                <span>⚡ AI extracts entities & intent • Pure code calculates pricing, inventory, room blocks & discounts.</span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: "Transparent Brain" Moving Parts Inspector -->
+          <aside class="inspector-column">
+            <div class="inspector-card">
+              <div class="inspector-header">
+                <div class="inspector-title-wrap">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  <h3>Moving Parts Inspector</h3>
+                </div>
+                <span id="inspector-status-badge" class="badge badge-waiting">Ready</span>
+              </div>
+              <p class="inspector-desc">Live audit trace showing which rules, assumptions, and math formulas were used.</p>
+
+              <div id="inspector-body" class="inspector-body">
+                <!-- 1. Intent Classification -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">🏷️</span> 1. First-Level Intent Filter
+                  </div>
+                  <div id="insp-intent-content" class="section-content">
+                    <div class="placeholder-text">Awaiting incoming email...</div>
+                  </div>
+                </div>
+
+                <!-- 2. Rule of 3 Gatekeeper -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">📋</span> 2. Rule of 3 Gatekeeper
+                  </div>
+                  <div id="insp-rule3-content" class="section-content">
+                    <div class="placeholder-text">Evaluating minimum details...</div>
+                  </div>
+                </div>
+
+                <!-- 3. Active Assumptions Applied -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">💡</span> 3. Active Assumptions Applied
+                  </div>
+                  <div id="insp-assumptions-content" class="section-content">
+                    <div class="placeholder-text">No active assumptions yet.</div>
+                  </div>
+                </div>
+
+                <!-- 4. Triggered Discounts -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">🏷️</span> 4. Triggered Discounts
+                  </div>
+                  <div id="insp-discounts-content" class="section-content">
+                    <div class="placeholder-text">Discounts will be audited here.</div>
+                  </div>
+                </div>
+
+                <!-- 5. Cross-Sell Inventory Tree Path -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">🌳</span> 5. Cross-Sell Inventory Tree
+                  </div>
+                  <div id="insp-crosssell-content" class="section-content">
+                    <div class="placeholder-text">Inventory branch traversal will appear here.</div>
+                  </div>
+                </div>
+
+                <!-- 6. Deterministic Math Audit -->
+                <div class="inspector-section">
+                  <div class="section-title">
+                    <span class="icon">🔢</span> 6. Deterministic Math Audit
+                  </div>
+                  <div id="insp-math-content" class="section-content">
+                    <div class="placeholder-text">Line-by-line calculations will be logged here.</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB 2: HOTEL SETTINGS COMMAND CENTER (SCREEN 2) -->
+      <!-- ============================================== -->
+      <section id="view-settings" class="tab-view">
+        <div class="settings-workspace">
+          
+          <div class="settings-top-bar">
+            <div>
+              <h2>Hotel Management Command Center</h2>
+              <p>Configure live prices, discount rules, default assumptions, and minimum required fields without touching code.</p>
+            </div>
+            <div class="settings-actions">
+              <button id="btn-save-settings" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Save All Settings
+              </button>
+              <button id="btn-reset-settings" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"></path><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.2"></path></svg>
+                Reset to PDF Defaults
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            
+            <!-- Card 1: Room Inventory & Pricing -->
+            <div class="settings-card">
+              <div class="card-header">
+                <h3>🛏️ Room Inventory & Tariffs</h3>
+                <span class="card-hint">PDF Section 3</span>
+              </div>
+              <div class="table-responsive">
+                <table class="settings-table" id="table-rooms">
+                  <thead>
+                    <tr>
+                      <th>Room Type</th>
+                      <th>Max Pax</th>
+                      <th>Price / Night (₹)</th>
+                      <th>Available Rooms</th>
+                    </tr>
+                  </thead>
+                  <tbody><!-- Rendered by JS --></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Card 2: Conference & Event Facilities -->
+            <div class="settings-card">
+              <div class="card-header">
+                <h3>🏛️ Conference & Event Rooms</h3>
+                <span class="card-hint">PDF Section 3</span>
+              </div>
+              <div class="table-responsive">
+                <table class="settings-table" id="table-conference">
+                  <thead>
+                    <tr>
+                      <th>Hall Name</th>
+                      <th>Max Capacity</th>
+                      <th>Price / Day (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody><!-- Rendered by JS --></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Card 3: Dining Packages & Extras -->
+            <div class="settings-card">
+              <div class="card-header">
+                <h3>🍽️ Food, Beverage & Extras</h3>
+                <span class="card-hint">PDF Section 3 & 4.3</span>
+              </div>
+              <div class="table-responsive">
+                <table class="settings-table" id="table-dinner">
+                  <thead>
+                    <tr>
+                      <th>Package Name</th>
+                      <th>Includes</th>
+                      <th>Price / Pax (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody><!-- Rendered by JS --></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Card 4: "Rule of 3" Minimum Details Configurator -->
+            <div class="settings-card">
+              <div class="card-header">
+                <h3>📋 "Rule of 3" Gatekeeper Configuration</h3>
+                <span class="card-hint">Fields required before quoting</span>
+              </div>
+              <p class="card-subtext">Toggle which fields the AI must know before sending a quote. If unchecked, the engine uses default assumptions.</p>
+              <div id="min-details-list" class="toggle-list">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Card 5: Assumptions Matrix -->
+            <div class="settings-card">
+              <div class="card-header">
+                <h3>💡 Default Assumptions Matrix</h3>
+                <span class="card-hint">PDF Section 4.5</span>
+              </div>
+              <div class="form-grid" id="assumptions-form">
+                <div class="form-group">
+                  <label for="asmp-corporate-occ">Corporate Occupancy (pax/room)</label>
+                  <input type="number" id="asmp-corporate-occ" min="1" max="3" class="form-control" />
+                  <span class="field-help">PDF default: 1 person per room for privacy</span>
+                </div>
+                <div class="form-group">
+                  <label for="asmp-wedding-occ">Wedding Occupancy (pax/room)</label>
+                  <input type="number" id="asmp-wedding-occ" min="1" max="3" class="form-control" />
+                  <span class="field-help">PDF default: 3 persons per room (max capacity)</span>
+                </div>
+                <div class="form-group">
+                  <label for="asmp-social-occ">Social/Reunion Occupancy (pax/room)</label>
+                  <input type="number" id="asmp-social-occ" min="1" max="3" class="form-control" />
+                  <span class="field-help">Default: 2 persons per room</span>
+                </div>
+                <div class="form-group">
+                  <label for="asmp-default-room">Default Room Category</label>
+                  <select id="asmp-default-room" class="form-control">
+                    <option value="deluxe">Deluxe Room</option>
+                    <option value="super_deluxe">Super Deluxe Room</option>
+                    <option value="suite">Executive Suite</option>
+                  </select>
+                  <span class="field-help">Baseline tier used for first estimate</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6: Deterministic Discount Rules -->
+            <div class="settings-card full-width">
+              <div class="card-header">
+                <h3>🏷️ Deterministic Discount Rules</h3>
+                <span class="card-hint">PDF Section 4.4</span>
+              </div>
+              <div class="table-responsive">
+                <table class="settings-table" id="table-discounts">
+                  <thead>
+                    <tr>
+                      <th>Rule Name</th>
+                      <th>Condition Type</th>
+                      <th>Threshold Value</th>
+                      <th>Discount %</th>
+                      <th>Applies To</th>
+                    </tr>
+                  </thead>
+                  <tbody><!-- Rendered by JS --></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Card 7: Cross-Sell Inventory Tree Rules -->
+            <div class="settings-card full-width">
+              <div class="card-header">
+                <h3>🌳 Cross-Sell Rules & Tree Connections</h3>
+                <span class="card-hint">PDF Section 4.3</span>
+              </div>
+              <div class="tree-rules-grid">
+                <div class="tree-rule-item">
+                  <input type="checkbox" id="rule-offsite-conf" checked />
+                  <label for="rule-offsite-conf">
+                    <strong>Offsite $\implies$ Auto-size Conference Room</strong>
+                    <span>Assigns the smallest conference room that comfortably fits the entire group headcount.</span>
+                  </label>
+                </div>
+                <div class="tree-rule-item">
+                  <input type="checkbox" id="rule-conf-dinner" checked />
+                  <label for="rule-conf-dinner">
+                    <strong>Conference Room $\implies$ Suggest Dinner Package</strong>
+                    <span>When a conference room is included, automatically cross-sell the dinner package.</span>
+                  </label>
+                </div>
+                <div class="tree-rule-item">
+                  <input type="checkbox" id="rule-dinner-drinks" checked />
+                  <label for="rule-dinner-drinks">
+                    <strong>Dinner Package $\implies$ Suggest Drinks Package</strong>
+                    <span>When a dinner package is selected, cross-sell the per-person beverage add-on.</span>
+                  </label>
+                </div>
+                <div class="tree-rule-item">
+                  <input type="checkbox" id="rule-wedding-bundle" checked />
+                  <label for="rule-wedding-bundle">
+                    <strong>Wedding $\implies$ Grand Hall + Wedding Feast + Decor + Couple's Suite</strong>
+                    <span>Automatically bundles the complete royal wedding package with complimentary suite.</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- TAB 3: ARCHITECTURE & SYSTEM DESIGN (DELIVERABLE 1) -->
+      <!-- ============================================== -->
+      <section id="view-architecture" class="tab-view">
+        <div class="architecture-workspace">
+          
+          <div class="arch-hero">
+            <div class="arch-badge">INTERVIEW SPECIFICATION & ARCHITECTURE</div>
+            <h2>End-to-End System Design & The Deterministic Engine</h2>
+            <p>A resilient, enterprise-grade architecture that decouples semantic natural language parsing from mathematical business logic.</p>
+          </div>
+
+          <div class="arch-cards-grid">
+            
+            <div class="arch-card">
+              <div class="arch-card-header">
+                <div class="step-num">01</div>
+                <h3>First-Level Intent Classifier</h3>
+              </div>
+              <p>The moment an unstructured email arrives, the semantic layer categorizes it into one of 4 operational archetypes: <strong>Wedding</strong>, <strong>Corporate Offsite</strong>, <strong>Conference</strong>, or <strong>Family Reunion</strong>. This immediately sets the occupancy density rules and cross-sell tree path.</p>
+            </div>
+
+            <div class="arch-card">
+              <div class="arch-card-header">
+                <div class="step-num">02</div>
+                <h3>The "Rule of 3" Gatekeeper</h3>
+              </div>
+              <p>Only 3 non-negotiable anchors are required for Quote #1: <strong>Guest Count</strong>, <strong>Dates/Duration</strong>, and <strong>Booking Type</strong>. If present, quote immediately. Questions about room tier, catering, and specific halls are handled via <strong>stated assumptions</strong> rather than stalling with extra email turns.</p>
+            </div>
+
+            <div class="arch-card">
+              <div class="arch-card-header">
+                <div class="step-num">03</div>
+                <h3>Deterministic Rules Engine</h3>
+              </div>
+              <p><strong>Zero hallucinated math.</strong> Prices, room inventory checks, volume discounts (20+ rooms $\to$ 10%), advance booking discounts (60+ days $\to$ 5%), and inverse budget solvers are executed by pure JavaScript code, ensuring 100% auditability.</p>
+            </div>
+
+            <div class="arch-card">
+              <div class="arch-card-header">
+                <div class="step-num">04</div>
+                <h3>Transparent Brain Inspector</h3>
+              </div>
+              <p>Every response surfaces an auditable trace: parsed entities, missing items, assumptions made, rules fired, and formula math. Hotel staff and guests can instantly see exactly how every single rupee was computed.</p>
+            </div>
+
+          </div>
+
+          <!-- Architecture Visual Flow Box -->
+          <div class="arch-flow-box">
+            <h3>Visual System Pipeline</h3>
+            <div class="pipeline-diagram">
+              <div class="pipe-node">
+                <span class="node-tag">INBOUND</span>
+                <strong>Email Text</strong>
+                <small>Unstructured email</small>
+              </div>
+              <div class="pipe-arrow">➔</div>
+              <div class="pipe-node">
+                <span class="node-tag">AI PARSER</span>
+                <strong>Intent & Entities</strong>
+                <small>Semantic JSON extract</small>
+              </div>
+              <div class="pipe-arrow">➔</div>
+              <div class="pipe-node gatekeeper">
+                <span class="node-tag">GATEKEEPER</span>
+                <strong>Rule of 3 Check</strong>
+                <small>Dates + Pax + Intent</small>
+              </div>
+              <div class="pipe-arrow">➔</div>
+              <div class="pipe-node core-engine">
+                <span class="node-tag">DETERMINISTIC</span>
+                <strong>Pricing Engine</strong>
+                <small>Code & Rules Math</small>
+              </div>
+              <div class="pipe-arrow">➔</div>
+              <div class="pipe-node">
+                <span class="node-tag">SYNTHESIS</span>
+                <strong>Quote + Audit</strong>
+                <small>Friendly email + Trace</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benchmark Test Matrix -->
+          <div class="benchmark-table-box">
+            <h3>Benchmark Verification Matrix (Section 9)</h3>
+            <table class="settings-table">
+              <thead>
+                <tr>
+                  <th>Test Email</th>
+                  <th>Scenario Type</th>
+                  <th>System Decision</th>
+                  <th>Moving Parts Triggered</th>
+                  <th>Round-Trips</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Email A</strong></td>
+                  <td>Missing Details (Wedding in Dec)</td>
+                  <td><span class="badge badge-warning">Follow-up Questions</span></td>
+                  <td>Triggers 4.1 Follow-up for exact December dates and guest count.</td>
+                  <td>Turn 1 asks questions; Turn 2 quotes immediately.</td>
+                </tr>
+                <tr>
+                  <td><strong>Email B</strong></td>
+                  <td>Corporate Offsite (30 employees, Nov 12-14)</td>
+                  <td><span class="badge badge-success">Instant Quote</span></td>
+                  <td>30 Deluxe rooms (1/room corporate), 10% volume discount, Summit Hall, Classic Veg dinner.</td>
+                  <td><strong>1 Turn Quote</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Email C</strong></td>
+                  <td>Wedding (90 guests, Jan 20-23, 2027)</td>
+                  <td><span class="badge badge-success">Instant Quote</span></td>
+                  <td>30 rooms (3/room max cap), 10% room discount + 5% advance booking, Grand Hall, Wedding Feast, Decor, Bridal Suite.</td>
+                  <td><strong>1 Turn Quote</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Email D</strong></td>
+                  <td>Budget-Based (₹3 Lakh, 25 pax)</td>
+                  <td><span class="badge badge-purple">Budget Optimizer</span></td>
+                  <td>Inverse solver matches 9 Deluxe rooms + Summit Hall + Dinners within budget (₹2.4L total with ₹60k buffer).</td>
+                  <td><strong>1 Turn Quote</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-banner" class="toast-banner" aria-live="polite"></div>
+
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
