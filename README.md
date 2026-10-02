@@ -1,10 +1,13 @@
 # GrandVue AI — Autonomous Hotel Group Booking Concierge & Deterministic Pricing Engine
 
+> 🌐 **Live Demo:** **[https://vivek77741.github.io/GrandVue-AI/](https://vivek77741.github.io/GrandVue-AI/)**  
+> *Click above to test the live application directly in your browser without any local setup.*
+
+[![Live Demo](https://img.shields.io/badge/demo-LIVE%20ONLINE-success?style=flat-square&logo=githubpages)](https://vivek77741.github.io/GrandVue-AI/)
 [![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Vite Version](https://img.shields.io/badge/vite-v8.3-blue.svg)](https://vitejs.dev/)
 [![Gemini API](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-orange.svg)](https://ai.google.dev/)
 [![Tests Passing](https://img.shields.io/badge/test%20suite-20%2F20%20PASS-success.svg)](./TEST_RESULTS_REPORT.md)
-[![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 
 An enterprise-grade, autonomous group reservation concierge and deterministic pricing engine engineered for luxury hospitality. **GrandVue AI** eliminates manual sales response latency by instantly converting unstructured guest inquiries (emails, chats, inquiries) into transparent, itemized quotes—guaranteeing **zero AI mathematical hallucination**.
 
