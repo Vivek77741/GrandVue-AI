@@ -6,7 +6,7 @@ import { stateStore } from "./state.js";
 import { parseInboundEmail } from "./parser.js";
 import { evaluateInquiry, formatINR } from "./engine.js";
 import { formatSystemResponse } from "./copywriter.js";
-import { parseEmailWithGemini, draftReplyWithGemini, GEMINI_MODEL } from "./gemini.js";
+import { parseEmailWithGemini, draftReplyWithGemini, GEMINI_MODEL, getGeminiApiKey, getDefaultPresetKey } from "./gemini.js";
 
 // Toggle for Live Gemini vs Local Engine
 let useLiveGemini = true;
@@ -584,6 +584,82 @@ function initSettingsView() {
       stateStore.resetToDefaults();
       renderSettingsTables();
       showToast("Reset to official PDF defaults.");
+    });
+  }
+
+  // Gemini AI Key Controls
+  initGeminiKeyControls();
+}
+
+function initGeminiKeyControls() {
+  const keyInput = document.getElementById("input-gemini-key");
+  const toggleBtn = document.getElementById("btn-toggle-key");
+  const saveKeyBtn = document.getElementById("btn-save-key");
+  const restoreKeyBtn = document.getElementById("btn-restore-default-key");
+  const statusDot = document.getElementById("gemini-status-dot");
+  const statusBadge = document.getElementById("gemini-status-badge");
+
+  if (!keyInput) return;
+
+  function updateStatusUI() {
+    const currentKey = getGeminiApiKey();
+    if (keyInput) keyInput.value = currentKey;
+
+    if (currentKey && currentKey.length > 5) {
+      if (statusDot) {
+        statusDot.style.background = "#10b981";
+        statusDot.style.boxShadow = "0 0 8px #10b981";
+      }
+      if (statusBadge) {
+        statusBadge.textContent = "● LIVE AI ACTIVE";
+        statusBadge.style.color = "#10b981";
+        statusBadge.style.background = "rgba(16, 185, 129, 0.15)";
+        statusBadge.style.borderColor = "rgba(16, 185, 129, 0.3)";
+      }
+    } else {
+      if (statusDot) {
+        statusDot.style.background = "#f59e0b";
+        statusDot.style.boxShadow = "0 0 8px #f59e0b";
+      }
+      if (statusBadge) {
+        statusBadge.textContent = "○ OFFLINE FALLBACK ACTIVE";
+        statusBadge.style.color = "#f59e0b";
+        statusBadge.style.background = "rgba(245, 158, 11, 0.15)";
+        statusBadge.style.borderColor = "rgba(245, 158, 11, 0.3)";
+      }
+    }
+  }
+
+  updateStatusUI();
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      if (keyInput.type === "password") {
+        keyInput.type = "text";
+        toggleBtn.textContent = "HIDE";
+      } else {
+        keyInput.type = "password";
+        toggleBtn.textContent = "SHOW";
+      }
+    });
+  }
+
+  if (saveKeyBtn) {
+    saveKeyBtn.addEventListener("click", () => {
+      const val = keyInput.value.trim();
+      localStorage.setItem("grandvue_gemini_key", val);
+      updateStatusUI();
+      showToast("Gemini API key updated successfully!");
+    });
+  }
+
+  if (restoreKeyBtn) {
+    restoreKeyBtn.addEventListener("click", () => {
+      localStorage.removeItem("grandvue_gemini_key");
+      const defaultKey = getDefaultPresetKey();
+      keyInput.value = defaultKey;
+      updateStatusUI();
+      showToast("Restored default pre-configured Gemini API key!");
     });
   }
 }

@@ -214,6 +214,32 @@
 
           <div class="settings-grid">
             
+            <!-- Card 0: Gemini AI Intelligence Engine -->
+            <div class="settings-card" style="grid-column: 1 / -1; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.04);">
+              <div class="card-header" style="margin-bottom: 8px;">
+                <div>
+                  <h3 style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.05rem;">
+                    <span id="gemini-status-dot" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                    ✨ Google Gemini 2.5 Flash AI Engine
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 0 0;">
+                    Live LLM semantic parser and hospitality concierge copywriter. Pre-configured with active API key.
+                  </p>
+                </div>
+                <span id="gemini-status-badge" style="font-size: 0.72rem; padding: 4px 10px; border-radius: 9999px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; letter-spacing: 0.5px;">
+                  ● LIVE AI ACTIVE
+                </span>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 260px; position: relative;">
+                  <input type="password" id="input-gemini-key" class="settings-input" placeholder="Google Gemini API Key" style="width: 100%; font-family: 'JetBrains Mono', monospace; padding-right: 48px; font-size: 0.85rem;" />
+                  <button type="button" id="btn-toggle-key" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--accent-gold); cursor: pointer; font-size: 0.72rem; font-weight: 700;">SHOW</button>
+                </div>
+                <button type="button" id="btn-save-key" class="btn btn-primary" style="padding: 7px 14px; font-size: 0.82rem;">Update Key</button>
+                <button type="button" id="btn-restore-default-key" class="btn btn-secondary" style="padding: 7px 14px; font-size: 0.82rem;">Reset to Default Key</button>
+              </div>
+            </div>
+
             <!-- Card 1: Room Inventory & Pricing -->
             <div class="settings-card">
               <div class="card-header">
